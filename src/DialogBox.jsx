@@ -2,6 +2,7 @@ import {
   Dialog, DialogActions, DialogContent, DialogTitle, Button,
 } from '@material-ui/core';
 import React from 'react';
+import { Grid } from 'semantic-ui-react';
 
 const DialogBox = (props) => {
   const {
@@ -33,12 +34,9 @@ const DialogBox = (props) => {
               <br />
               {
                 item.options.map(option => (
-                  <p>
-                    {option.key + 1}
-                    .
-                    {option.data}
-                    <br />
-                  </p>
+                  <ul>
+                    <li>{option.value}</li>
+                  </ul>
                 ))
               }
               <b>Answer:</b>
@@ -51,7 +49,6 @@ const DialogBox = (props) => {
           Question:
           {details.length + 1 }
         </b>
-        <br />
         {question.value}
         <br />
         <br />
@@ -59,12 +56,9 @@ const DialogBox = (props) => {
         <br />
         {
           options.map(option => (
-            <p>
-              {option.key}
-              .
-              {option.data}
-              <br />
-            </p>
+            <ul>
+              <li>{option.value}</li>
+            </ul>
           ))
         }
         <b>Answer:</b>
