@@ -1,8 +1,5 @@
-import {
-  Dialog, DialogActions, DialogContent, DialogTitle, Button,
-} from '@material-ui/core';
 import React from 'react';
-import { Grid } from 'semantic-ui-react';
+import { Modal, Button } from 'semantic-ui-react';
 
 const DialogBox = (props) => {
   const {
@@ -10,35 +7,37 @@ const DialogBox = (props) => {
   } = props;
   console.log('details', details);
   return (
-    <Dialog
-      maxWidth="md"
-      fullWidth
+    <Modal
+      style={{ lineHeight: '2.2em' }}
+      maxwidth="md"
       open={open}
       onClose={set(false)}
 
     >
-      <DialogTitle>Answer Summary</DialogTitle>
-      <DialogContent>
+      <Modal.Header>Answer Summary</Modal.Header>
+      <Modal.Content>
         {
           details.map((item, key) => (
             <>
               <b>
-                Question:
+                Question(
                 {key + 1}
+                )
               </b>
-              <br />
-              {item.question.value}
-              <br />
-              <br />
+              <p>{item.question.value}</p>
+              <hr />
               <b>Choices</b>
               <br />
               {
-                item.options.map(option => (
-                  <ul>
-                    <li>{option.value}</li>
-                  </ul>
+                item.options.map((option, keyValue) => (
+                  <p>
+                    {String.fromCharCode(97 + keyValue)}
+                    .
+                    {option.value}
+                  </p>
                 ))
               }
+              <hr />
               <b>Answer:</b>
               {item.correctAnswer.answer}
               <br />
@@ -49,30 +48,34 @@ const DialogBox = (props) => {
           Question:
           {details.length + 1 }
         </b>
+        <br />
         {question.value}
-        <br />
-        <br />
+        <hr />
         <b>Choices</b>
         <br />
         {
-          options.map(option => (
-            <ul>
-              <li>{option.value}</li>
-            </ul>
+          options.map((option, keyValue) => (
+            <p>
+              {String.fromCharCode(97 + keyValue)}
+              .
+              {option.value}
+            </p>
           ))
         }
+        <hr />
         <b>Answer:</b>
-        {answer.answer}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => set(false)} color="primary">
+        <br />
+        {answer.value}
+      </Modal.Content>
+      <Modal.Actions>
+        <Button onClick={() => set(false)} style={{ color: 'primary' }}>
           Cancel
         </Button>
-        <Button onClick={set(true)} color="primary">
+        <Button onClick={set(true)} style={{ color: 'red' }}>
           Submit
         </Button>
-      </DialogActions>
-    </Dialog>
+      </Modal.Actions>
+    </Modal>
   );
 };
 export default DialogBox;

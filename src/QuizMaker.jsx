@@ -1,42 +1,13 @@
 import React, { useState } from 'react';
 import {
-  makeStyles,
-  FormLabel,
-  FormControlLabel,
-} from '@material-ui/core';
-import {
-  Button, TextArea, Form, Input, Label, Radio, Grid, GridColumn,
+  Button, TextArea, Form, Input, Label, Radio, Grid,
 } from 'semantic-ui-react';
 import './App.css';
 import DialogBox from './DialogBox';
 
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'grid',
-  },
-  formControl: {
-    margin: '50px',
-  },
-  group: {
-    margin: theme.spacing(1, 0),
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  container: {
-    display: 'grid',
-    flexWrap: 'wrap',
-  },
-  input: {
-    margin: theme.spacing(1),
-  },
-}));
 const QuizMaker = () => {
-  const classes = useStyles();
   const [count, setCount] = useState(0);
-  const [answerSummary, setSummary] = useState([]);
+  const [answerSummary, setAnswerSummary] = useState([]);
   const [correctAnswer, setCorrectAnswer] = useState({ key: '', value: '' });
   const [dialogStatus, setDialogStatus] = useState(false);
   const [question, setQuestion] = useState({ key: count, value: '' });
@@ -63,17 +34,16 @@ const QuizMaker = () => {
       } else {
         summary.push({ question, options, correctAnswer });
       }
-      setSummary(summary);
+      setAnswerSummary(summary);
       setOptions([{ key: 0, value: '' },
         { key: 1, value: '' }]);
       setCount(count + 1);
       setQuestion({ key: count, value: '' });
       setCorrectAnswer({ key: '', value: '' });
-    } else {
-      alert('Enter complete answer');
     }
   };
   const handleSubmit = () => {
+    const summary = [...answerSummary];
     if (question.value !== ''
      && options.every(item => item !== '')
      && correctAnswer.value !== '') {
@@ -94,9 +64,9 @@ const QuizMaker = () => {
     setCount(count - 1);
   };
   return (
-    <div>
+    <div className="App">
       <h2 style={{ marginLeft: '20%' }}>Quiz Maker</h2>
-      <Form className={classes.formControl}>
+      <Form>
         <Label>
            Question
           {count + 1}
@@ -119,7 +89,7 @@ const QuizMaker = () => {
           </Label>
           {
            options && options.map((item, key) => (
-             <Grid.Row>
+             <Grid.Row key={item.key}>
                <Grid.Column>
                  <Radio
                    value={item.key}
@@ -128,7 +98,7 @@ const QuizMaker = () => {
                    name="options"
                    onChange={() => setCorrectAnswer({
                      key: item.key,
-                     answer: item.value,
+                     value: item.value,
                    })}
                    disabled={options[key].value.length === 0}
                  />
@@ -154,10 +124,16 @@ const QuizMaker = () => {
               >
                 Prev
               </Button>
-              <Button onClick={clearQuestion} disabled={count > 3}>
+              <Button
+                disabled={options.some(item => item.value === '')
+                 || question === '' || correctAnswer.value === '' || count > 3}
+                onClick={clearQuestion}
+              >
                 Next
               </Button>
               <Button
+                disabled={options.some(item => item.value === '')
+                || question === '' || correctAnswer.value === ''}
                 style={{ color: 'Red', float: 'right' }}
                 onClick={handleSubmit}
               >
